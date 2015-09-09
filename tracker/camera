@@ -1,0 +1,29 @@
+#!/bin/bash
+echo Camera script ...
+
+cd /home/pi/pits/tracker
+
+while [ 1 ]
+do
+	for i in {0..4}
+	do
+		if [ -e take_pic_$i ]
+		then
+			current_date=$(date "+%d_%m_%y")
+			current_time=$(date "+%H_%M_%S")
+			echo Running script take_pic_$i ...
+			sudo ./take_pic_$i $current_time $current_date
+			sudo rm -f take_pic_$i
+		fi
+		
+		if [ -e convert_$i ]
+		then
+			current_date=$(date "+%d_%m_%y")
+			echo Running script convert_$i ...
+			sudo ./convert_$i $current_date
+			sudo rm -f convert_$i
+		fi
+	done
+
+	sleep 1
+done
